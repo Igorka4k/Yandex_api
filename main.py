@@ -14,6 +14,8 @@ class MyWidget(QMainWindow):
         uic.loadUi('main.ui', self)  # Загружаем дизайн
         self.latitude = '0.0'
         self.longitude = '0.0'
+        self.lineEdit.setText("35.35")
+        self.lineEdit_2.setText("35.35")
         self.spn = self.spn = self.lineEdit_3.setText('1.0')
         self.initUI()
 
@@ -39,12 +41,36 @@ class MyWidget(QMainWindow):
             float(self.spn)
         except Exception:
             self.spn = 0
+        try:
+            float(self.lineEdit.text())
+        except Exception:
+            self.lineEdit.setText('35.35')
+        try:
+            float(self.lineEdit.text())
+        except Exception:
+            self.lineEdit.setText("35.35")
         if event.key() == Qt.Key_PageUp:
             n = min(float(self.spn) + 0.5, 90)
             self.lineEdit_3.setText(str(n))
         if event.key() == Qt.Key_PageDown:
             n = max(float(self.spn) - 0.5, 0.5)
             self.lineEdit_3.setText(str(n))
+
+        if event.key() == Qt.Key_W:
+            n = float(self.lineEdit_2.text()) + float(self.spn)
+            self.lineEdit_2.setText(str(n))
+
+        if event.key() == Qt.Key_S:
+            n = float(self.lineEdit_2.text()) - float(self.spn)
+            self.lineEdit_2.setText(str(n))
+
+        if event.key() == Qt.Key_A:
+            n = float(self.lineEdit.text()) - float(self.spn)
+            self.lineEdit.setText(str(n))
+
+        if event.key() == Qt.Key_D:
+            n = float(self.lineEdit.text()) + float(self.spn)
+            self.lineEdit.setText(str(n))
         self.fetchImage()
 
 
