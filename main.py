@@ -36,12 +36,12 @@ class MyWidget(QMainWindow):
         self.latitude = self.lineEdit.text()
         self.longitude = self.lineEdit_2.text()
         self.spn = self.lineEdit_3.text()
-        url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.views[self.view_index][0]}"
-        self.draw(url)
+        self.url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.views[self.view_index][0]}"
+        self.draw(self.url)
 
     def draw(self, url):
-        response = requests.get(url)
-        bytes = io.BytesIO(response.content)
+        self.response = requests.get(url)
+        bytes = io.BytesIO(self.response.content)
         pixmap = QPixmap()
         pixmap.loadFromData(bytes.read())
         self.label.setPixmap(pixmap)
@@ -68,19 +68,23 @@ class MyWidget(QMainWindow):
 
         if event.key() == Qt.Key_W:
             n = float(self.lineEdit_2.text()) + float(self.spn)
-            self.lineEdit_2.setText(str(n))
+            if -90 <= n <= 90:
+                self.lineEdit_2.setText(str(n))
 
         if event.key() == Qt.Key_S:
             n = float(self.lineEdit_2.text()) - float(self.spn)
-            self.lineEdit_2.setText(str(n))
+            if -90 <= n <= 90:
+                self.lineEdit_2.setText(str(n))
 
         if event.key() == Qt.Key_A:
             n = float(self.lineEdit.text()) - float(self.spn)
-            self.lineEdit.setText(str(n))
+            if -180 <= n <= 180:
+                self.lineEdit.setText(str(n))
 
         if event.key() == Qt.Key_D:
             n = float(self.lineEdit.text()) + float(self.spn)
-            self.lineEdit.setText(str(n))
+            if -180 <= n <= 180:
+                self.lineEdit.setText(str(n))
         self.fetchImage()
 
 
