@@ -14,28 +14,29 @@ class MyWidget(QMainWindow):
         uic.loadUi('main.ui', self)  # Загружаем дизайн
         self.latitude = '0.0'
         self.longitude = '0.0'
-        self.view = 'sat'
+        self.views = [('map', 'Схема'), ('sat', 'Спутник'), ('sat,skl', 'Гибрид')]
+        self.view_index = 0
         self.lineEdit.setText("35.35")
         self.lineEdit_2.setText("35.35")
-        self.spn = self.spn = self.lineEdit_3.setText('1.0')
+        self.spn = self.lineEdit_3.setText('1.0')
         self.initUI()
 
     def initUI(self):
         self.pushButton.clicked.connect(self.fetchImage)
-        self.buttonScheme.clicked.connect(lambda: self.setView('map'))
-        self.buttonSatellite.clicked.connect(lambda: self.setView('sat'))
-        self.buttonHybrid.clicked.connect(lambda: self.setView('sat,skl'))
+        self.pushButton_2.clicked.connect(self.setView)
         self.fetchImage()
 
-    def setView(self, viewType):
-        self.view = viewType
+    def setView(self):
+        self.view_index += 1
+        self.view_index %= len(self.views)
+        self.pushButton_2.setText(self.views[self.view_index][1])
         self.fetchImage()
 
     def fetchImage(self):
         self.latitude = self.lineEdit.text()
         self.longitude = self.lineEdit_2.text()
         self.spn = self.lineEdit_3.text()
-        url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.view}"
+        url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.views[self.view_index][0]}"
         self.draw(url)
 
     def draw(self, url):

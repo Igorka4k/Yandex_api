@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>631</width>
+    <height>623</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,136 +17,148 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>110</y>
+      <x>10</x>
+      <y>150</y>
       <width>600</width>
       <height>450</height>
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
-      <width>113</width>
-      <height>20</height>
+      <y>70</y>
+      <width>461</width>
+      <height>71</height>
      </rect>
     </property>
+    <property name="title">
+     <string>Положение карты</string>
+    </property>
+    <widget class="QLineEdit" name="lineEdit_3">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>40</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_2">
+     <property name="geometry">
+      <rect>
+       <x>134</x>
+       <y>40</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>19</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Широта</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>20</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Долгота</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>20</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Масштаб</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>12</y>
+       <width>75</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Схема</string>
+     </property>
+    </widget>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>40</y>
-      <width>113</width>
-      <height>20</height>
+      <x>10</x>
+      <y>10</y>
+      <width>381</width>
+      <height>51</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>40</y>
-      <width>113</width>
-      <height>20</height>
-     </rect>
+    <property name="title">
+     <string>Поиск</string>
     </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>47</width>
-      <height>13</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Широта</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>20</y>
-      <width>47</width>
-      <height>13</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Долгота</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>20</y>
-      <width>47</width>
-      <height>13</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Масштаб</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>40</y>
-      <width>111</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Отобразить карту</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonScheme">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>80</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Схема</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonSatellite">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>80</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Спутник</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonHybrid">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>80</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Гибрид</string>
-    </property>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>304</x>
+       <y>20</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Найти</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_4">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>20</y>
+       <width>371</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <zorder>lineEdit_4</zorder>
+    <zorder>pushButton</zorder>
    </widget>
   </widget>
  </widget>
