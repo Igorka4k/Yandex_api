@@ -1,7 +1,10 @@
 import sys
 
-from PyQt5 import uic  # Импортируем uic
+from PyQt5 import uic, QtGui  # Импортируем uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtGui import QPixmap
+import requests
+import io
 
 
 class MyWidget(QMainWindow):
@@ -11,7 +14,15 @@ class MyWidget(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        pass
+        url = "https://static-maps.yandex.ru/1.x/?ll=134.590649,-23.519879&spn=35.5,35.5&l=sat"
+        response = requests.get(url)
+        bytes = io.BytesIO(response.content)
+        self.draw(bytes)
+
+    def draw(self, bytes):
+        pixmap = QPixmap()
+        pixmap.loadFromData(bytes.read())
+        self.label.setPixmap(pixmap)
 
 
 if __name__ == '__main__':
