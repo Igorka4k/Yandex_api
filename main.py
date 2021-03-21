@@ -14,12 +14,18 @@ class MyWidget(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        url = "https://static-maps.yandex.ru/1.x/?ll=134.590649,-23.519879&spn=35.5,35.5&l=sat"
+        self.pushButton.clicked.connect(self.fetchImage)
+
+    def fetchImage(self):
+        latitude = self.lineEdit.text()
+        longitude = self.lineEdit_2.text()
+        spn = self.lineEdit_3.text()
+        url = f"https://static-maps.yandex.ru/1.x/?ll={latitude},{longitude}&spn={spn},{spn}&l=sat"
+        self.draw(url)
+
+    def draw(self, url):
         response = requests.get(url)
         bytes = io.BytesIO(response.content)
-        self.draw(bytes)
-
-    def draw(self, bytes):
         pixmap = QPixmap()
         pixmap.loadFromData(bytes.read())
         self.label.setPixmap(pixmap)
