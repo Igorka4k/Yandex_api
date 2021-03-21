@@ -14,6 +14,7 @@ class MyWidget(QMainWindow):
         uic.loadUi('main.ui', self)  # Загружаем дизайн
         self.latitude = '0.0'
         self.longitude = '0.0'
+        self.view = 'sat'
         self.lineEdit.setText("35.35")
         self.lineEdit_2.setText("35.35")
         self.spn = self.spn = self.lineEdit_3.setText('1.0')
@@ -21,12 +22,20 @@ class MyWidget(QMainWindow):
 
     def initUI(self):
         self.pushButton.clicked.connect(self.fetchImage)
+        self.buttonScheme.clicked.connect(lambda: self.setView('map'))
+        self.buttonSatellite.clicked.connect(lambda: self.setView('sat'))
+        self.buttonHybrid.clicked.connect(lambda: self.setView('sat,skl'))
+        self.fetchImage()
+
+    def setView(self, viewType):
+        self.view = viewType
+        self.fetchImage()
 
     def fetchImage(self):
         self.latitude = self.lineEdit.text()
         self.longitude = self.lineEdit_2.text()
         self.spn = self.lineEdit_3.text()
-        url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l=sat"
+        url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.view}"
         self.draw(url)
 
     def draw(self, url):
@@ -50,10 +59,10 @@ class MyWidget(QMainWindow):
         except Exception:
             self.lineEdit.setText("35.35")
         if event.key() == Qt.Key_PageUp:
-            n = min(float(self.spn) + 0.5, 90)
+            n = round(min(float(self.spn) + (float(self.spn) + 0.5) / 10, 90), 4)
             self.lineEdit_3.setText(str(n))
         if event.key() == Qt.Key_PageDown:
-            n = max(float(self.spn) - 0.5, 0.5)
+            n = round(max(float(self.spn) - (float(self.spn) + 0.5) / 10, 0.001), 4)
             self.lineEdit_3.setText(str(n))
 
         if event.key() == Qt.Key_W:
