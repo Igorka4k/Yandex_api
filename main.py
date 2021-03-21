@@ -9,6 +9,8 @@ import io
 
 
 class MyWidget(QMainWindow):
+    point = False
+
     def __init__(self):
         super().__init__()
         uic.loadUi('main.ui', self)  # Загружаем дизайн
@@ -33,10 +35,13 @@ class MyWidget(QMainWindow):
         self.fetchImage()
 
     def findPlace(self, place):
-        response_address = requests.get("http://geocode-maps.yandex.ru/1.x/?"
-                                        "apikey=40d1649f-0493-4b70-98ba-98533de7710b&"
-                                        f"geocode={place}&"
-                                        "format=json").json()['response']['GeoObjectCollection'][
+        params = {
+            "apikey": "40d1649f-0493-4b70-98ba-98533de7710b",
+            'geocode': place,
+            'format': 'json',
+        }
+        response_address = requests.get("http://geocode-maps.yandex.ru/1.x/?",
+                                        params).json()['response']['GeoObjectCollection'][
             'featureMember'][0]['GeoObject']['Point']['pos']
 
         self.lineEdit.setText(response_address.split()[0])
@@ -47,14 +52,22 @@ class MyWidget(QMainWindow):
         self.latitude = self.lineEdit.text()
         self.longitude = self.lineEdit_2.text()
         self.spn = self.lineEdit_3.text()
-        if not is_find:
-            url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.views[self.view_index][0]}"
-        else:
-            url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.views[self.view_index][0]}&pt={self.latitude},{self.longitude},flag"
-        self.draw(url)
+        static_url = "https://static-maps.yandex.ru/1.x/?"
+        params = {
+            "ll": f"{self.latitude},{self.longitude}",
+            "spn": f"{self.spn},{self.spn}",
+            "l": self.views[self.view_index][0]
+        }
+        if is_find:
+            params["pt"] = f"{self.latitude},{self.longitude},flag"
+            self.point = (self.latitude, self.longitude)
+        if self.point:
+            params["pt"] = f"{self.point[0]},{self.point[1]},flag"
 
-    def draw(self, url):
-        response = requests.get(url)
+        self.draw(static_url, params)
+
+    def draw(self, url, params):
+        response = requests.get(url, params)
         bytes = io.BytesIO(response.content)
         pixmap = QPixmap()
         pixmap.loadFromData(bytes.read())
@@ -80,21 +93,25 @@ class MyWidget(QMainWindow):
             n = round(max(float(self.spn) - (float(self.spn) + 0.5) / 10, 0.001), 4)
             self.lineEdit_3.setText(str(n))
 
-        if event.key() == Qt.Key_W:
+        if event.key() == Qt.Key_W or event.key() == 1062:
             n = float(self.lineEdit_2.text()) + float(self.spn)
-            self.lineEdit_2.setText(str(n))
+            if -90 <= n <= 90:
+                self.lineEdit_2.setText(str(n))
 
-        if event.key() == Qt.Key_S:
+        if event.key() == Qt.Key_S or event.key() == 1067:
             n = float(self.lineEdit_2.text()) - float(self.spn)
-            self.lineEdit_2.setText(str(n))
+            if -90 <= n <= 90:
+                self.lineEdit_2.setText(str(n))
 
-        if event.key() == Qt.Key_A:
+        if event.key() == Qt.Key_A or event.key() == 1060:
             n = float(self.lineEdit.text()) - float(self.spn)
-            self.lineEdit.setText(str(n))
+            if -180 <= n <= 180:
+                self.lineEdit.setText(str(n))
 
-        if event.key() == Qt.Key_D:
+        if event.key() == Qt.Key_D or event.key() == 1042:
             n = float(self.lineEdit.text()) + float(self.spn)
-            self.lineEdit.setText(str(n))
+            if -180 <= n <= 180:
+                self.lineEdit.setText(str(n))
         self.fetchImage()
 
 
