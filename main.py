@@ -40,10 +40,10 @@ class MyWidget(QMainWindow):
         except Exception:
             self.spn = 0
         if event.key() == Qt.Key_PageUp:
-            n = min(float(self.spn) + 0.5, 90)
+            n = round(min(float(self.spn) + (float(self.spn) + 0.5) / 10, 90), 4)
             self.lineEdit_3.setText(str(n))
         if event.key() == Qt.Key_PageDown:
-            n = max(float(self.spn) - 0.5, 0.5)
+            n = round(max(float(self.spn) - (float(self.spn) + 0.5) / 10, 0.001), 4)
             self.lineEdit_3.setText(str(n))
         self.fetchImage()
 
