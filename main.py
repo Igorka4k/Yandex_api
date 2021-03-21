@@ -22,7 +22,7 @@ class MyWidget(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.pushButton.clicked.connect(self.fetchImage)
+        self.pushButton.clicked.connect(lambda: self.findPlace(self.lineEdit_4.text()))
         self.pushButton_2.clicked.connect(self.setView)
         self.fetchImage()
 
@@ -32,11 +32,25 @@ class MyWidget(QMainWindow):
         self.pushButton_2.setText(self.views[self.view_index][1])
         self.fetchImage()
 
-    def fetchImage(self):
+    def findPlace(self, place):
+        response_address = requests.get("http://geocode-maps.yandex.ru/1.x/?"
+                                        "apikey=40d1649f-0493-4b70-98ba-98533de7710b&"
+                                        f"geocode={place}&"
+                                        "format=json").json()['response']['GeoObjectCollection'][
+            'featureMember'][0]['GeoObject']['Point']['pos']
+
+        self.lineEdit.setText(response_address.split()[0])
+        self.lineEdit_2.setText(response_address.split()[1])
+        self.fetchImage(True)
+
+    def fetchImage(self, is_find=False):
         self.latitude = self.lineEdit.text()
         self.longitude = self.lineEdit_2.text()
         self.spn = self.lineEdit_3.text()
-        url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.views[self.view_index][0]}"
+        if not is_find:
+            url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.views[self.view_index][0]}"
+        else:
+            url = f"https://static-maps.yandex.ru/1.x/?ll={self.latitude},{self.longitude}&spn={self.spn},{self.spn}&l={self.views[self.view_index][0]}&pt={self.latitude},{self.longitude},flag"
         self.draw(url)
 
     def draw(self, url):
