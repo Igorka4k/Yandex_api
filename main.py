@@ -1,11 +1,28 @@
 import sys
 
 from PyQt5 import uic, QtGui  # Импортируем uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QCheckBox
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 import requests
 import io
+
+
+def find_place_address_and_index(place):
+    response_address = requests.get("http://geocode-maps.yandex.ru/1.x/?"
+                                    "apikey=40d1649f-0493-4b70-98ba-98533de7710b&"
+                                    f"geocode={place}&"
+                                    "format=json").json()
+    address = response_address['response']['GeoObjectCollection']['featureMember'][0]['GeoObject'][
+        'metaDataProperty']['GeocoderMetaData']['Address']['formatted']
+
+    try:
+        index = \
+            response_address['response']['GeoObjectCollection']['featureMember'][0]['GeoObject'][
+                'metaDataProperty']['GeocoderMetaData']['Address']['postal_code']
+    except KeyError:
+        index = ''
+    return address, index
 
 
 class MyWidget(QMainWindow):
@@ -27,6 +44,7 @@ class MyWidget(QMainWindow):
         self.pushButton.clicked.connect(lambda: self.findPlace(self.lineEdit_4.text()))
         self.pushButton_2.clicked.connect(self.setView)
         self.pushButton_3.clicked.connect(self.clear_searching_row)
+        self.checkBox.clicked.connect(lambda: self.findPlace(self.lineEdit_4.text()))
         self.fetchImage()
 
     def setView(self):
@@ -38,6 +56,7 @@ class MyWidget(QMainWindow):
     def clear_searching_row(self):
         self.point = False
         self.lineEdit_4.setText('')
+        self.label_5.setText('')
         self.fetchImage()
 
     def findPlace(self, place):
@@ -52,6 +71,11 @@ class MyWidget(QMainWindow):
 
         self.lineEdit.setText(response_address.split()[0])
         self.lineEdit_2.setText(response_address.split()[1])
+        address, index = find_place_address_and_index(place)
+        if self.checkBox.isChecked() and index:
+            self.label_5.setText(', '.join((address, index)))
+        else:
+            self.label_5.setText(address)
         self.fetchImage(True)
 
     def fetchImage(self, is_find=False):

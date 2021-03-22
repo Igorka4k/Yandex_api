@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>631</width>
-    <height>623</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>150</y>
+      <y>170</y>
       <width>600</width>
-      <height>450</height>
+      <height>449</height>
      </rect>
     </property>
     <property name="text">
@@ -31,9 +31,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>70</y>
+      <y>90</y>
       <width>461</width>
-      <height>71</height>
+      <height>70</height>
      </rect>
     </property>
     <property name="title">
@@ -127,8 +127,8 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>461</width>
-      <height>51</height>
+      <width>601</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="title">
@@ -152,7 +152,7 @@
       <rect>
        <x>4</x>
        <y>20</y>
-       <width>371</width>
+       <width>301</width>
        <height>21</height>
       </rect>
      </property>
@@ -160,9 +160,9 @@
     <widget class="QPushButton" name="pushButton_3">
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>373</x>
        <y>20</y>
-       <width>71</width>
+       <width>70</width>
        <height>21</height>
       </rect>
      </property>
@@ -170,9 +170,48 @@
       <string>Сброс</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>46</y>
+       <width>581</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_5">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>20</y>
+       <width>439</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>23</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Почтовый индекс</string>
+     </property>
+    </widget>
+    <zorder>lineEdit_5</zorder>
     <zorder>lineEdit_4</zorder>
     <zorder>pushButton</zorder>
     <zorder>pushButton_3</zorder>
+    <zorder>label_5</zorder>
+    <zorder>checkBox</zorder>
    </widget>
   </widget>
  </widget>
