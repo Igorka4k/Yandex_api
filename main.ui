@@ -127,7 +127,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>381</width>
+      <width>461</width>
       <height>51</height>
      </rect>
     </property>
@@ -157,8 +157,22 @@
       </rect>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>20</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Сброс</string>
+     </property>
+    </widget>
     <zorder>lineEdit_4</zorder>
     <zorder>pushButton</zorder>
+    <zorder>pushButton_3</zorder>
    </widget>
   </widget>
  </widget>

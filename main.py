@@ -26,12 +26,18 @@ class MyWidget(QMainWindow):
     def initUI(self):
         self.pushButton.clicked.connect(lambda: self.findPlace(self.lineEdit_4.text()))
         self.pushButton_2.clicked.connect(self.setView)
+        self.pushButton_3.clicked.connect(self.clear_searching_row)
         self.fetchImage()
 
     def setView(self):
         self.view_index += 1
         self.view_index %= len(self.views)
         self.pushButton_2.setText(self.views[self.view_index][1])
+        self.fetchImage()
+
+    def clear_searching_row(self):
+        self.point = False
+        self.lineEdit_4.setText('')
         self.fetchImage()
 
     def findPlace(self, place):
