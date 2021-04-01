@@ -90,7 +90,7 @@ class MyWidget(QMainWindow):
         if not postalChange:
             self.fetchImage(True)
 
-    def findByCoord(self, coord):
+    def findByCoord(self, coord, doReturn=False):
         params = {
             "apikey": "40d1649f-0493-4b70-98ba-98533de7710b",
             'geocode': f"{coord[0]},{coord[1]}",
@@ -99,10 +99,12 @@ class MyWidget(QMainWindow):
         response_address = requests.get("http://geocode-maps.yandex.ru/1.x/?",
                                         params).json()
         address = response_address['response']['GeoObjectCollection'][
-           'featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['formatted']
+            'featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['formatted']
+        if doReturn:
+            return address
         try:
             postal_code = response_address['response']['GeoObjectCollection'][
-               'featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['postal_code']
+                'featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['postal_code']
         except KeyError:
             postal_code = None
         if self.checkBox.isChecked() and postal_code:
@@ -110,6 +112,25 @@ class MyWidget(QMainWindow):
         else:
             self.label_5.setText(address)
 
+    def findOrganisationByCoord(self, coord, text):
+        params = {
+            "apikey": "dda3ddba-c9ea-4ead-9010-f43fbc15c6e3",
+            'text': text,
+            'lang': 'ru_RU',
+            'spn': f"0.002,{abs(0.002 * math.cos(coord[1]))}",
+            'll': f"{coord[0]},{coord[1]}",
+            'rspn': 1,
+            'format': 'json',
+            'type': 'biz',
+            'results': 1
+        }
+        response = requests.get("https://search-maps.yandex.ru/v1/", params)
+        print(response.url)
+        jsonobj = response.json()
+        coord = jsonobj['features'][0]['geometry']['coordinates']
+        self.setPoint((coord[0], coord[1]))
+        name = jsonobj['features'][0]['properties']['name']
+        self.label_5.setText(name)
 
     def setPoint(self, coord):
         self.isMarkerSet = True
@@ -187,33 +208,35 @@ class MyWidget(QMainWindow):
     def mousePressEvent(self, event):
         x = event.pos().x() - 10
         y = event.pos().y() - 170
-        if event.buttons() == Qt.RightButton:
-            if x >= 0 and y >= 0 and x <= 600 and y <= 450:
-                if int(self.z) <= 3:
-                    return
-                xpart = x / 600
-                ypart = y / 450
-                latdif = 285 / (2 ** (int(self.z)))
-                longdif = 420 / (2 ** (int(self.z)))
-                newlong = float(self.longitude) - longdif + (longdif * 2) * xpart
-                newlat = float(self.latitude) + latdif - (latdif * 2) * ypart
-                a = math.cos(math.radians(float(self.latitude)))
-                b = newlat - float(self.latitude)
-                c = a * b
-                if float(self.latitude) > 0:
-                    if b > 0:
-                        # b = math.cos(float(self.latitude)) * (newlat - float(self.latitude))
-                        # print(b)
-                        newlat = float(self.latitude) + c
-                    else:
-                        newlat = float(self.latitude) + c * 1.25
+        if x >= 0 and y >= 0 and x <= 600 and y <= 450:
+            if int(self.z) <= 3:
+                return
+            xpart = x / 600
+            ypart = y / 450
+            latdif = 285 / (2 ** (int(self.z)))
+            longdif = 420 / (2 ** (int(self.z)))
+            newlong = float(self.longitude) - longdif + (longdif * 2) * xpart
+            newlat = float(self.latitude) + latdif - (latdif * 2) * ypart
+            a = math.cos(math.radians(float(self.latitude)))
+            b = newlat - float(self.latitude)
+            c = a * b
+            if float(self.latitude) > 0:
+                if b > 0:
+                    # b = math.cos(float(self.latitude)) * (newlat - float(self.latitude))
+                    # print(b)
+                    newlat = float(self.latitude) + c
                 else:
-                    if b > 0:
-                        newlat = float(self.latitude) + c * 1.25
-                    else:
-                        newlat = float(self.latitude) + c
+                    newlat = float(self.latitude) + c * 1.25
+            else:
+                if b > 0:
+                    newlat = float(self.latitude) + c * 1.25
+                else:
+                    newlat = float(self.latitude) + c
+            if event.buttons() == Qt.LeftButton:
                 self.setPoint((newlong, newlat))  # long, lat (долгота, широта)
                 self.findByCoord((newlong, newlat))
+            elif event.buttons() == Qt.RightButton:
+                self.findOrganisationByCoord((newlong, newlat), self.findByCoord((newlong, newlat), True))
 
 
 def except_hook(cls, exception, traceback):
